@@ -1,0 +1,8 @@
+## 사용법
+
+### SpringBoot의 application.properties에서 사용법
+
+redis.session.host=localhost
+redis.session.port=6379
+redis.cache.host=localhost
+redis.cache.port=6380

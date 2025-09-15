@@ -1,0 +1,50 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    container_name: petner-postgres
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      TZ: Asia/Seoul
+      POSTGRES_USER: ${POSTGRES_USER:-petner}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-petnerdb}
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+      - ./postgres/init-vector.sql:/docker-entrypoint-initdb.d/init-vector.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-petner}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  redis-session:
+    image: redis:7-alpine
+    container_name: petner-redis-session
+    ports:
+      - "${REDIS_SESSION_PORT:-6379}:6379"
+    environment:
+      TZ: Asia/Seoul
+    volumes:
+      - ./redis-session/data:/data
+      - ./redis-session/redis.conf:/etc/redis/redis.conf
+    command: ["redis-server", "/etc/redis/redis.conf"]
+    restart: unless-stopped
+
+  redis-cache:
+    image: redis:7-alpine
+    container_name: petner-redis-cache
+    ports:
+      - "${REDIS_CACHE_PORT:-6380}:6379"
+    environment:
+      TZ: Asia/Seoul
+    volumes:
+      - ./redis-cache/data:/data
+      - ./redis-cache/redis.conf:/etc/redis/redis.conf
+    command: ["redis-server", "/etc/redis/redis.conf"]
+    restart: unless-stopped
+
+networks:
+  default:
+    name: petner-network
