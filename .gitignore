@@ -7,6 +7,8 @@
 
 # Database data directories (sensitive data)
 postgres/data/
+redis-session/data/
+redis-cache/data/
 mongo/data/
 valkey-session/data/
 valkey-cache/data/
