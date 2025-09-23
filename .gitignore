@@ -12,6 +12,7 @@ redis-cache/data/
 mongo/data/
 valkey-session/data/
 valkey-cache/data/
+opensearch/data/
 
 # Database logs
 *.log
