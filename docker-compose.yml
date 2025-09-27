@@ -19,29 +19,16 @@ services:
       retries: 5
     restart: unless-stopped
 
-  redis-session:
+  redis:
     image: redis:7-alpine
-    container_name: petner-redis-session
+    container_name: petner-redis
     ports:
-      - "${REDIS_SESSION_PORT}:6379"
+      - "${REDIS_PORT}:6379"
     environment:
       TZ: Asia/Seoul
     volumes:
-      - ./redis-session/data:/data
-      - ./redis-session/redis.conf:/etc/redis/redis.conf
-    command: ["redis-server", "/etc/redis/redis.conf"]
-    restart: unless-stopped
-
-  redis-cache:
-    image: redis:7-alpine
-    container_name: petner-redis-cache
-    ports:
-      - "${REDIS_CACHE_PORT}:6379"
-    environment:
-      TZ: Asia/Seoul
-    volumes:
-      - ./redis-cache/data:/data
-      - ./redis-cache/redis.conf:/etc/redis/redis.conf
+      - ./redis/data:/data
+      - ./redis/redis.conf:/etc/redis/redis.conf
     command: ["redis-server", "/etc/redis/redis.conf"]
     restart: unless-stopped
 
